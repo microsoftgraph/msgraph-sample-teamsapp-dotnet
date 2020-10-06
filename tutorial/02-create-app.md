@@ -1,5 +1,14 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
+Microsoft Teams tab applications have multiple options to authenticate the user and call Microsoft Graph. In this exercise, you'll implement a tab that does [single sign-on](/microsoftteams/platform/tabs/how-to/authentication/auth-aad-sso) to get an auth token on the client, then uses [on-behalf-of flow](/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) on the server to exchange that token to get access to Microsoft Graph.
+
+For other alternatives, see the following.
+
+- [Build a Microsoft Teams tab with the Microsoft Graph Toolkit](/graph/toolkit/get-started/build-a-microsoft-teams-tab). This sample is completely client-side, and uses the Microsoft Graph Toolkit to handle authentication and making calls to Microsoft Graph.
+- [Microsoft Teams Authentication Sample](https://github.com/OfficeDev/microsoft-teams-sample-auth-node). This sample contains multiple examples covering different authentication scenarios.
+
+## Create the project
+
 Start by creating an ASP.NET Core web app.
 
 1. Open your command-line interface (CLI) in a directory where you want to create the project. Run the following command.
