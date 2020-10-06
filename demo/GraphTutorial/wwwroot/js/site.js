@@ -2,3 +2,28 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your Javascript code.
+
+// <ThemeSupportSnippet>
+(function () {
+  // Support Teams themes
+  microsoftTeams.initialize();
+
+  // On load, match the current theme
+  microsoftTeams.getContext((context) => {
+    if(context.theme !== 'default') {
+      // For Dark and High contrast, set text to white
+      document.body.style.color = '#fff';
+    }
+  });
+
+  // Register event listener for theme change
+  microsoftTeams.registerOnThemeChangeHandler((theme)=> {
+    if(theme !== 'default') {
+      document.body.style.color = '#fff';
+    } else {
+      // For default theme, remove inline style
+      document.body.style.color = '';
+    }
+  });
+})();
+// </ThemeSupportSnippet>

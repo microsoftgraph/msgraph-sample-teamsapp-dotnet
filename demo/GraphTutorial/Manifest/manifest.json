@@ -1,0 +1,47 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.7/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.7",
+    "version": "1.0.0",
+    "id": "9a7c8742-3c3c-4a38-bffb-bec91018d3c1",
+    "packageName": "com.contoso.graphtutorial",
+    "developer": {
+        "name": "Contoso, Inc.",
+        "websiteUrl": "https://www.contoso.com",
+        "privacyUrl": "https://www.contoso.com/privacy",
+        "termsOfUseUrl": "https://www.contoso.com/termsofuse"
+    },
+    "icons": {
+        "color": "color.png",
+        "outline": "outline.png"
+    },
+    "name": {
+        "short": "Graph Tutorial",
+        "full": "Graph Tutorial for Microsoft Teams"
+    },
+    "description": {
+        "short": "Uses Microsoft Graph to access your calendar",
+        "full": "Uses Microsoft Graph to access your calendar and display it in Microsoft Teams."
+    },
+    "accentColor": "#393939",
+    "staticTabs": [
+        {
+            "entityId": "calendarTab",
+            "name": "Graph Calendar",
+            "contentUrl": "https://50153897dd4d.ngrok.io",
+            "scopes": [
+                "personal"
+            ]
+        }
+    ],
+    "permissions": [
+        "identity",
+        "messageTeamMembers"
+    ],
+    "validDomains": [
+        "50153897dd4d.ngrok.io"
+    ],
+    "webApplicationInfo": {
+        "id": "7c656493-5c88-411d-8f5d-fc21b4a22f1e",
+        "resource": "api://50153897dd4d.ngrok.io/7c656493-5c88-411d-8f5d-fc21b4a22f1e"
+    }
+}

@@ -7,7 +7,10 @@ This tutorial teaches you how to build a Microsoft Teams app using ASP.NET Core 
 
 ## Prerequisites
 
-Before you start this tutorial, you should have the [.NET Core SDK](https://dotnet.microsoft.com/download) installed on your development machine. If you do not have the SDK, visit the previous link for download options.
+Before you start this tutorial, you should have the following installed on your development machine.
+
+- [.NET Core SDK](https://dotnet.microsoft.com/download).
+- [ngrok](https://ngrok.com/)
 
 You should also have either a personal Microsoft account with a mailbox on Outlook.com, or a Microsoft work or school account. If you don't have a Microsoft account, there are a couple of options to get a free account:
 
