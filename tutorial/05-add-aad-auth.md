@@ -267,10 +267,10 @@ Because the Web API cannot prompt the user, the Teams tab will need to implement
     function renderCalendar(events) {
       $('#tab-container').empty();
 
-      $('<code/>', {
+      $('<pre/>').append($('<code/>', {
         text: JSON.stringify(events, null, 2),
         style: 'word-break: break-all;'
-      }).appendTo('#tab-container');
+      })).appendTo('#tab-container');
     }
     ```
 

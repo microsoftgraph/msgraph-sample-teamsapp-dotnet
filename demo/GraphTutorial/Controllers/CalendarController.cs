@@ -34,6 +34,7 @@ namespace GraphTutorial.Controllers
             _logger = logger;
         }
 
+        // <GetSnippet>
         [HttpGet]
         public async Task<IEnumerable<Event>> Get()
         {
@@ -108,7 +109,9 @@ namespace GraphTutorial.Controllers
                 return null;
             }
         }
+        // </GetSnippet>
 
+        // <GetStartOfWeekSnippet>
         private DateTime GetUtcStartOfWeekInTimeZone(DateTime today, string timeZoneId)
         {
             // Time zone returned by Graph could be Windows or IANA style
@@ -124,5 +127,6 @@ namespace GraphTutorial.Controllers
             // convert to UTC
             return TimeZoneInfo.ConvertTimeToUtc(unspecifiedStart, userTimeZone);
         }
+        // </GetStartOfWeekSnippet>
     }
 }
