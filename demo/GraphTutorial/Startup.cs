@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
 
 namespace GraphTutorial
 {
@@ -21,10 +22,23 @@ namespace GraphTutorial
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // <ConfigureServicesSnippet>
         public void ConfigureServices(IServiceCollection services)
         {
+            // Use Web API authentication (default JWT bearer token scheme)
+            services.AddMicrosoftIdentityWebApiAuthentication(Configuration)
+                // Enable token acquisition via on-behalf-of flow
+                .EnableTokenAcquisitionToCallDownstreamApi()
+                // Specify that the down-stream API is Graph
+                .AddMicrosoftGraph(Configuration.GetSection("Graph"))
+                // Use in-memory token cache
+                // See https://github.com/AzureAD/microsoft-identity-web/wiki/token-cache-serialization
+                .AddInMemoryTokenCaches();
+
             services.AddRazorPages();
+            services.AddControllers().AddNewtonsoftJson();
         }
+        // </ConfigureServicesSnippet>
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -45,11 +59,13 @@ namespace GraphTutorial
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
