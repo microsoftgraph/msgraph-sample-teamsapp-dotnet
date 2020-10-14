@@ -23,7 +23,15 @@ The app manifest describes how the app integrates with Microsoft Teams and is re
 
 1. Fill in the fields as follows, where `YOUR_NGROK_URL` is the forwarding URL you copied in the previous section. Select **Save** when done.
 
-    - **Name:** `Graph Calendar`
+    - **Name:** `Create event`
+    - **Entity ID:** `createEventTab`
+    - **Content URL:** `YOUR_NGROK_URL/newevent`
+
+1. Select **Add** under **Add a personal tab**.
+
+1. Fill in the fields as follows, where `YOUR_NGROK_URL` is the forwarding URL you copied in the previous section. Select **Save** when done.
+
+    - **Name:** `Graph calendar`
     - **Entity ID:** `calendarTab`
     - **Content URL:** `YOUR_NGROK_URL`
 

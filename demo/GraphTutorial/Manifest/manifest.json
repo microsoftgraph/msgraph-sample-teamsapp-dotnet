@@ -26,8 +26,16 @@
     "staticTabs": [
         {
             "entityId": "calendarTab",
-            "name": "Graph Calendar",
+            "name": "Graph calendar",
             "contentUrl": "https://50153897dd4d.ngrok.io",
+            "scopes": [
+                "personal"
+            ]
+        },
+        {
+            "entityId": "createEventTab",
+            "name": "Create event",
+            "contentUrl": "https://50153897dd4d.ngrok.io/newevent",
             "scopes": [
                 "personal"
             ]
