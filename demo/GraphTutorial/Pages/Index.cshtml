@@ -41,14 +41,103 @@
       }).appendTo('#tab-container');
     }
 
+    // <RenderCalendarSnippet>
     function renderCalendar(events) {
       $('#tab-container').empty();
 
-      $('<pre/>').append($('<code/>', {
-        text: JSON.stringify(events, null, 2),
-        style: 'word-break: break-all;'
-      })).appendTo('#tab-container');
+      // Add title
+      $('<div/>', {
+        class: 'ms-fontSize-42',
+        text: 'Week at a glance'
+      }).appendTo('#tab-container');
+
+      // Add Create event button
+      $('<div/>', {
+        class: 'tab-button ms-fontSize-18 ms-depth-8',
+        text: 'Create event',
+        click: loadNewEventForm
+      }).appendTo('#tab-container');
+
+      // Render each event
+      events.map(event => {
+        const eventCard = $('<div/>', {
+          class: 'event-card ms-depth-4',
+        });
+
+        eventCard.append(renderSubject(event.subject));
+        eventCard.append(renderOrganizer(event.organizer));
+        eventCard.append(renderTimeSpan(event.start, event.end));
+
+        const location = renderLocation(event.location);
+        if (location) {
+          eventCard.append(location);
+        }
+
+        eventCard.appendTo('#tab-container');
+      });
     }
+    // </RenderCalendarSnippet>
+
+    // <RenderHelpersSnippet>
+    function renderSubject(subject) {
+      if (!subject || subject.length <= 0) {
+        subject = '<No subject>';
+      }
+
+      return $('<div/>', {
+          class: 'ms-fontSize-18 ms-fontWeight-bold',
+          text: subject
+      });
+    }
+
+    function renderOrganizer(organizer) {
+      return $('<div/>', {
+        class: 'ms-fontSize-14 ms-fontWeight-semilight',
+        text: organizer.emailAddress.name
+      }).append($('<i/>', {
+        class: 'ms-Icon ms-Icon--PartyLeader',
+        style: 'margin-right: 10px;'
+      }));
+    }
+
+    function renderTimeSpan(start, end) {
+      return $('<div/>', {
+        class: 'ms-fontSize-14 ms-fontWeight-semilight',
+        text: `${formatDateTime(start.dateTime)} - ${formatDateTime(end.dateTime)}`
+      }).append($('<i/>', {
+        class: 'ms-Icon ms-Icon--DateTime2',
+        style: 'margin-right: 10px;'
+      }));
+    }
+
+    function formatDateTime(dateTime) {
+      const date = new Date(dateTime);
+
+      // Format like 10/14/2020 4:00 PM
+      let hours = date.getHours();
+      const minutes = date.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      const minStr = minutes < 10 ? `0${minutes}` : minutes;
+
+      return `${date.getMonth()}/${date.getDay()}/${date.getFullYear()} ${hours}:${minStr} ${ampm}`;
+    }
+
+    function renderLocation(location) {
+      if (!location || location.displayName.length <= 0) {
+        return null;
+      }
+
+      return $('<div/>', {
+        class: 'ms-fontSize-14 ms-fontWeight-semilight',
+        text: location.displayName
+      }).append($('<i/>', {
+        class: 'ms-Icon ms-Icon--MapPin',
+        style: 'margin-right: 10px;'
+      }));
+    }
+    // </RenderHelpersSnippet>
 
     // <LoadUserCalendarSnippet>
     function loadUserCalendar(token, callback) {
@@ -102,5 +191,9 @@
       });
     }
     // </LoadUserCalendarSnippet>
+
+    function loadNewEventForm() {
+      alert('clicked');
+    }
   </script>
 }

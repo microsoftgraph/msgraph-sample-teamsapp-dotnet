@@ -67,6 +67,10 @@ In this section you will create the basic UI structure of the application.
 
     This adds a simple theme change handler to change the default text color for dark and high contrast themes.
 
+1. Open **./wwwroot/css/site.css** and replace its contents with the following.
+
+    :::code language="css" source="../demo/GraphTutorial/wwwroot/css/site.css" id="CssSnippet":::
+
 1. Open **./Pages/Index.cshtml** and replace its contents with the following code.
 
     ```cshtml

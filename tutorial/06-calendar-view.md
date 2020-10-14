@@ -28,3 +28,25 @@ A calendar view is a set of events from the user's calendar that occur between t
 1. Save your changes and restart the app. Refresh the tab in Microsoft Teams. The app displays a JSON listing of the events.
 
 ## Display the results
+
+Now you can display the list of events in a more user friendly way.
+
+1. Open **./Pages/Index.cshtml** and add the following functions inside the `<script>` tag.
+
+    :::code language="javascript" source="../demo/GraphTutorial/Pages/Index.cshtml" id="RenderHelpersSnippet":::
+
+1. Replace the existing `renderCalendar` function with the following.
+
+    :::code language="javascript" source="../demo/GraphTutorial/Pages/Index.cshtml" id="RenderCalendarSnippet":::
+
+1. Add the following placeholder function inside the `<script>` tag.
+
+    ```javascript
+    function loadNewEventForm() {
+      alert('clicked');
+    }
+    ```
+
+1. Save your changes and restart the app. Refresh the tab in Microsoft Teams. The app displays events on the user's calendar.
+
+    ![A screenshot of the app displaying the user's calendar](images/calendar-view.png)

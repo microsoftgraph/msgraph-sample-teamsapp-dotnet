@@ -84,7 +84,8 @@ namespace GraphTutorial.Controllers
                         e.Subject,
                         e.Organizer,
                         e.Start,
-                        e.End
+                        e.End,
+                        e.Location
                     })
                     // Order results chronologically
                     .OrderBy("start/dateTime")
