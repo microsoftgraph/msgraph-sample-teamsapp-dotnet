@@ -39,14 +39,6 @@ Now you can display the list of events in a more user friendly way.
 
     :::code language="javascript" source="../demo/GraphTutorial/Pages/Index.cshtml" id="RenderCalendarSnippet":::
 
-1. Add the following placeholder function inside the `<script>` tag.
-
-    ```javascript
-    function loadNewEventForm() {
-      alert('clicked');
-    }
-    ```
-
 1. Save your changes and restart the app. Refresh the tab in Microsoft Teams. The app displays events on the user's calendar.
 
     ![A screenshot of the app displaying the user's calendar](images/calendar-view.png)

@@ -189,10 +189,10 @@ Start by adding the Microsoft Identity platform services to the application.
                 {
                     _logger.LogError(ex, "Consent required");
                     // This exception indicates consent is required.
-                    // Return a 401 with "consent_required" in the body
+                    // Return a 403 with "consent_required" in the body
                     // to signal to the tab it needs to prompt for consent
                     HttpContext.Response.ContentType = "text/plain";
-                    HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                     await HttpContext.Response.WriteAsync("consent_required");
                     return null;
                 }

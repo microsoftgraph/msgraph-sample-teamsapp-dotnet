@@ -1,4 +1,6 @@
 ﻿@page
+<!-- Copyright (c) Microsoft Corporation.
+     Licensed under the MIT License. -->
 @model IndexModel
 @{
   ViewData["Title"] = "Home page";
@@ -47,15 +49,8 @@
 
       // Add title
       $('<div/>', {
-        class: 'ms-fontSize-42',
+        class: 'tab-title ms-fontSize-42',
         text: 'Week at a glance'
-      }).appendTo('#tab-container');
-
-      // Add Create event button
-      $('<div/>', {
-        class: 'tab-button ms-fontSize-18 ms-depth-8',
-        text: 'Create event',
-        click: loadNewEventForm
       }).appendTo('#tab-container');
 
       // Render each event
@@ -121,7 +116,7 @@
       hours = hours ? hours : 12;
       const minStr = minutes < 10 ? `0${minutes}` : minutes;
 
-      return `${date.getMonth()}/${date.getDay()}/${date.getFullYear()} ${hours}:${minStr} ${ampm}`;
+      return `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()} ${hours}:${minStr} ${ampm}`;
     }
 
     function renderLocation(location) {
@@ -154,7 +149,7 @@
               callback(events);
             });
         }
-        else if (response.status === 401) {
+        else if (response.status === 403) {
           response.text()
             .then(body => {
               // If the API sent 'consent_required'
@@ -193,7 +188,7 @@
     // </LoadUserCalendarSnippet>
 
     function loadNewEventForm() {
-      alert('clicked');
+      window.location = "/newevent";
     }
   </script>
 }

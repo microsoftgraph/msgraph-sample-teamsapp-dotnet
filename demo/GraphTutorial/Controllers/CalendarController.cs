@@ -13,6 +13,7 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
 using Microsoft.Graph;
 using TimeZoneConverter;
+using GraphTutorial.Models;
 
 namespace GraphTutorial.Controllers
 {
@@ -97,10 +98,10 @@ namespace GraphTutorial.Controllers
             {
                 _logger.LogError(ex, "Consent required");
                 // This exception indicates consent is required.
-                // Return a 401 with "consent_required" in the body
+                // Return a 403 with "consent_required" in the body
                 // to signal to the tab it needs to prompt for consent
                 HttpContext.Response.ContentType = "text/plain";
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 await HttpContext.Response.WriteAsync("consent_required");
                 return null;
             }
@@ -129,5 +130,105 @@ namespace GraphTutorial.Controllers
             return TimeZoneInfo.ConvertTimeToUtc(unspecifiedStart, userTimeZone);
         }
         // </GetStartOfWeekSnippet>
+
+        // <PostSnippet>
+        [HttpPost]
+        public async Task<string> Post(NewEvent newEvent)
+        {
+            HttpContext.VerifyUserHasAnyAcceptedScope(apiScopes);
+
+            try
+            {
+                // Get the user's mailbox settings
+                var me = await _graphClient.Me
+                    .Request()
+                    .Select(u => new {
+                        u.MailboxSettings
+                    })
+                    .GetAsync();
+
+                // Create a Graph Event
+                var graphEvent = new Event
+                {
+                    Subject = newEvent.Subject,
+                    Start = new DateTimeTimeZone
+                    {
+                        DateTime = newEvent.Start,
+                        TimeZone = me.MailboxSettings.TimeZone
+                    },
+                    End = new DateTimeTimeZone
+                    {
+                        DateTime = newEvent.End,
+                        TimeZone = me.MailboxSettings.TimeZone
+                    }
+                };
+
+                // If there are attendees, add them
+                if (!string.IsNullOrEmpty(newEvent.Attendees))
+                {
+                    var attendees = new List<Attendee>();
+                    var emailArray = newEvent.Attendees.Split(';');
+                    foreach (var email in emailArray)
+                    {
+                        attendees.Add(new Attendee
+                        {
+                            Type = AttendeeType.Required,
+                            EmailAddress = new EmailAddress
+                            {
+                                Address = email
+                            }
+                        });
+                    }
+
+                    graphEvent.Attendees = attendees;
+                }
+
+                // If there is a body, add it
+                if (!string.IsNullOrEmpty(newEvent.Body))
+                {
+                    graphEvent.Body = new ItemBody
+                    {
+                        ContentType = BodyType.Text,
+                        Content = newEvent.Body
+                    };
+                }
+
+                // Create the event
+                await _graphClient.Me
+                    .Events
+                    .Request()
+                    .AddAsync(graphEvent);
+
+                return "success";
+            }
+            catch (MicrosoftIdentityWebChallengeUserException ex)
+            {
+                _logger.LogError(ex, "Consent required");
+                // This exception indicates consent is required.
+                // Return a 403 with "consent_required" in the body
+                // to signal to the tab it needs to prompt for consent
+                HttpContext.Response.ContentType = "text/plain";
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                await HttpContext.Response.WriteAsync("consent_required");
+                return null;
+            }
+            catch (ServiceException ex)
+            {
+                _logger.LogError(ex, "Error occurred");
+                HttpContext.Response.ContentType = "text/plain";
+                HttpContext.Response.StatusCode = (int)ex.StatusCode;
+                await HttpContext.Response.WriteAsync(ex.Error.ToString());
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred");
+                HttpContext.Response.ContentType = "text/plain";
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                await HttpContext.Response.WriteAsync(ex.ToString());
+                return null;
+            }
+        }
+        // </PostSnippet>
     }
 }

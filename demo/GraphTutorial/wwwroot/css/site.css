@@ -6,14 +6,8 @@
   --border-style: none;
 }
 
-.tab-button {
-  display: inline-block;
-  margin: .5em;
-  padding: .5em 1em;
-  border-style: var(--border-style);
-  border-width: 1px;
-  border-color: #fff;
-  cursor: pointer;
+.tab-title {
+  margin-bottom: .5em;
 }
 
 .event-card {
@@ -37,5 +31,39 @@
 
 .event-card .ms-Icon--MapPin {
   top: 2px;
+}
+
+.form-container {
+  max-width: 720px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: .25em;
+}
+
+.form-input {
+  width: 100%;
+  margin-bottom: .25em;
+  padding: .5em;
+  box-sizing: border-box;
+}
+
+.form-button {
+  padding: .5em;
+}
+
+.result-panel {
+  display: none;
+  padding: 1em;
+  margin: 1em;
+}
+
+.error-msg {
+  color: red;
+}
+
+.success-msg {
+  color: green;
 }
 /* </CssSnippet> */
