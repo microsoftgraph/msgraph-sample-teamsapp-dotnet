@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-Microsoft Teams tab applications have multiple options to authenticate the user and call Microsoft Graph. In this exercise, you'll implement a tab that does [single sign-on](/microsoftteams/platform/tabs/how-to/authentication/auth-aad-sso) to get an auth token on the client, then uses [on-behalf-of flow](/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) on the server to exchange that token to get access to Microsoft Graph.
+Microsoft Teams tab applications have multiple options to authenticate the user and call Microsoft Graph. In this exercise, you'll implement a tab that does [single sign-on](/microsoftteams/platform/tabs/how-to/authentication/auth-aad-sso) to get an auth token on the client, then uses the [on-behalf-of flow](/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) on the server to exchange that token to get access to Microsoft Graph.
 
 For other alternatives, see the following.
 

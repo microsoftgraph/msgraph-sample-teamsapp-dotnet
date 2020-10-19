@@ -16,7 +16,7 @@ A calendar view is a set of events from the user's calendar that occur between t
 
 1. Replace the existing `Get` function with the following.
 
-    :::code language="csharp" source="../demo/GraphTutorial/Controllers/CalendarController.cs" id="GetSnippet" highlight="2,14-56":::
+    :::code language="csharp" source="../demo/GraphTutorial/Controllers/CalendarController.cs" id="GetSnippet" highlight="2,14-57":::
 
     Review the changes. This new version of the function:
 

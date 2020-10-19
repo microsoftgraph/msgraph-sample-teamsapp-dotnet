@@ -67,7 +67,7 @@ First, implement single sign-on in the app's JavaScript code. You will use the [
     dotnet run
     ```
 
-    > ![IMPORTANT]
+    > [!IMPORTANT]
     > If you have restarted ngrok and your ngrok URL has changed, be sure to update the ngrok value in the following place **before** you test.
     >
     > - The redirect URI in your app registration
@@ -88,13 +88,11 @@ First, implement single sign-on in the app's JavaScript code. You will use the [
 
 1. The application opens in Teams and displays an access token.
 
-If you copy the token, you can paste it into [jwt.ms](https://jwt.ms), you'll notice that the audience (the `aud` claim) is your application ID, and the only scope (the `scp` claim) is the `access_as_user` API scope you created. That means that this token does not grant direct access to Microsoft Graph! Instead, the Web API you will implement soon will need to exchange this token using the [on-behalf-of flow](/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) to get a token that will work with Microsoft Graph calls.
+If you copy the token, you can paste it into [jwt.ms](https://jwt.ms). Verify that the audience (the `aud` claim) is your application ID, and the only scope (the `scp` claim) is the `access_as_user` API scope you created. That means that this token does not grant direct access to Microsoft Graph! Instead, the Web API you will implement soon will need to exchange this token using the [on-behalf-of flow](/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow) to get a token that will work with Microsoft Graph calls.
 
 ## Configure authentication in the ASP.NET Core app
 
 Start by adding the Microsoft Identity platform services to the application.
-
-1. Create a new file named **GraphConstants.cs** in the **./Graph** directory and add the following code.
 
 1. Open the **./Startup.cs** file and add the following `using` statement to the top of the file.
 
@@ -300,4 +298,4 @@ The app uses the in-memory token cache, which is sufficient for apps that do not
 
 The `GetAccessTokenForUserAsync` method handles token expiration and refresh for you. It first checks the cached token, and if it is not expired, it returns it. If it is expired, it uses the cached refresh token to obtain a new one.
 
-The **GraphServiceClient** that controllers get via dependency injection will be pre-configured with an authentication provider that uses `GetAccessTokenForUserAsync` for you.
+The **GraphServiceClient** that controllers get via dependency injection is pre-configured with an authentication provider that uses `GetAccessTokenForUserAsync` for you.
