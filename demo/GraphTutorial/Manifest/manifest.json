@@ -27,7 +27,7 @@
         {
             "entityId": "calendarTab",
             "name": "Graph calendar",
-            "contentUrl": "https://50153897dd4d.ngrok.io",
+            "contentUrl": "https://YOUR_NGROK_DOMAIN",
             "scopes": [
                 "personal"
             ]
@@ -35,7 +35,7 @@
         {
             "entityId": "createEventTab",
             "name": "Create event",
-            "contentUrl": "https://50153897dd4d.ngrok.io/newevent",
+            "contentUrl": "https://YOUR_NGROK_DOMAIN/newevent",
             "scopes": [
                 "personal"
             ]
@@ -46,10 +46,10 @@
         "messageTeamMembers"
     ],
     "validDomains": [
-        "50153897dd4d.ngrok.io"
+        "YOUR_NGROK_DOMAIN"
     ],
     "webApplicationInfo": {
-        "id": "7c656493-5c88-411d-8f5d-fc21b4a22f1e",
-        "resource": "api://50153897dd4d.ngrok.io/7c656493-5c88-411d-8f5d-fc21b4a22f1e"
+        "id": "YOUR_APP_ID",
+        "resource": "api://YOUR_NGROK_DOMAIN/YOUR_APP_ID"
     }
 }
