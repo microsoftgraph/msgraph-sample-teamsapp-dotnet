@@ -10,6 +10,10 @@ A calendar view is a set of events from the user's calendar that occur between t
 
     :::code language="csharp" source="../demo/GraphTutorial/Controllers/CalendarController.cs" id="GetStartOfWeekSnippet":::
 
+1. Add the following function to handle exceptions returned from Microsoft Graph calls.
+
+    :::code language="csharp" source="../demo/GraphTutorial/Controllers/CalendarController.cs" id="HandleGraphExceptionSnippet":::
+
 1. Replace the existing `Get` function with the following.
 
     :::code language="csharp" source="../demo/GraphTutorial/Controllers/CalendarController.cs" id="GetSnippet" highlight="2,14-56":::

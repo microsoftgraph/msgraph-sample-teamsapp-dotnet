@@ -94,20 +94,9 @@ namespace GraphTutorial.Controllers
 
                 return results.CurrentPage;
             }
-            catch (MicrosoftIdentityWebChallengeUserException ex)
-            {
-                _logger.LogError(ex, "Consent required");
-                // This exception indicates consent is required.
-                // Return a 403 with "consent_required" in the body
-                // to signal to the tab it needs to prompt for consent
-                HttpContext.Response.ContentType = "text/plain";
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                await HttpContext.Response.WriteAsync("consent_required");
-                return null;
-            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred");
+                await HandleGraphException(ex);
                 return null;
             }
         }
@@ -130,6 +119,37 @@ namespace GraphTutorial.Controllers
             return TimeZoneInfo.ConvertTimeToUtc(unspecifiedStart, userTimeZone);
         }
         // </GetStartOfWeekSnippet>
+
+        // <HandleGraphExceptionSnippet>
+        private async Task HandleGraphException(Exception exception)
+        {
+            if (exception is MicrosoftIdentityWebChallengeUserException)
+            {
+                _logger.LogError(exception, "Consent required");
+                // This exception indicates consent is required.
+                // Return a 403 with "consent_required" in the body
+                // to signal to the tab it needs to prompt for consent
+                HttpContext.Response.ContentType = "text/plain";
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                await HttpContext.Response.WriteAsync("consent_required");
+            }
+            else if (exception is ServiceException)
+            {
+                var serviceException = exception as ServiceException;
+                _logger.LogError(serviceException, "Graph service error occurred");
+                HttpContext.Response.ContentType = "text/plain";
+                HttpContext.Response.StatusCode = (int)serviceException.StatusCode;
+                await HttpContext.Response.WriteAsync(serviceException.Error.ToString());
+            }
+            else
+            {
+                _logger.LogError(exception, "Error occurred");
+                HttpContext.Response.ContentType = "text/plain";
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                await HttpContext.Response.WriteAsync(exception.ToString());
+            }
+        }
+        // </HandleGraphExceptionSnippet>
 
         // <PostSnippet>
         [HttpPost]
@@ -201,31 +221,9 @@ namespace GraphTutorial.Controllers
 
                 return "success";
             }
-            catch (MicrosoftIdentityWebChallengeUserException ex)
-            {
-                _logger.LogError(ex, "Consent required");
-                // This exception indicates consent is required.
-                // Return a 403 with "consent_required" in the body
-                // to signal to the tab it needs to prompt for consent
-                HttpContext.Response.ContentType = "text/plain";
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                await HttpContext.Response.WriteAsync("consent_required");
-                return null;
-            }
-            catch (ServiceException ex)
-            {
-                _logger.LogError(ex, "Error occurred");
-                HttpContext.Response.ContentType = "text/plain";
-                HttpContext.Response.StatusCode = (int)ex.StatusCode;
-                await HttpContext.Response.WriteAsync(ex.Error.ToString());
-                return null;
-            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred");
-                HttpContext.Response.ContentType = "text/plain";
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                await HttpContext.Response.WriteAsync(ex.ToString());
+                await HandleGraphException(ex);
                 return null;
             }
         }
