@@ -7,7 +7,7 @@ In this exercise you will extend the application from the previous exercise to s
 
 1. Open **./appsettings.json** and replace its contents with the following.
 
-    :::code language="json" source="../demo/GraphTutorial/appsettings.json" highlight="2-8":::
+    :::code language="json" source="../demo/GraphTutorial/appsettings.example.json" highlight="2-8":::
 
 1. Open your CLI in the directory where **GraphTutorial.csproj** is located, and run the following commands, substituting `YOUR_APP_ID` with your application ID from the Azure portal, and `YOUR_APP_SECRET` with your application secret.
 
