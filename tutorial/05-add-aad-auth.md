@@ -159,7 +159,7 @@ Start by adding the Microsoft Identity platform services to the application.
             }
 
             [HttpGet]
-            public async Task<string> Get()
+            public async Task<ActionResult<string>> Get()
             {
                 // This verifies that the access_as_user scope is
                 // present in the bearer token, throws if not
@@ -181,7 +181,7 @@ Start by adding the Microsoft Identity platform services to the application.
 
                     // Log the token
                     _logger.LogInformation($"Access token for Graph: {token}");
-                    return "{ \"status\": \"OK\" }";
+                    return Ok("{ \"status\": \"OK\" }");
                 }
                 catch (MicrosoftIdentityWebChallengeUserException ex)
                 {
@@ -189,15 +189,16 @@ Start by adding the Microsoft Identity platform services to the application.
                     // This exception indicates consent is required.
                     // Return a 403 with "consent_required" in the body
                     // to signal to the tab it needs to prompt for consent
-                    HttpContext.Response.ContentType = "text/plain";
-                    HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                    await HttpContext.Response.WriteAsync("consent_required");
-                    return null;
+                    return new ContentResult {
+                        StatusCode = (int)HttpStatusCode.Forbidden,
+                        ContentType = "text/plain",
+                        Content = "consent_required"
+                    };
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error occurred");
-                    return null;
+                    throw;
                 }
             }
         }
@@ -282,7 +283,10 @@ Because the Web API cannot prompt the user, the Teams tab will need to implement
     }
     ```
 
-1. Save your changes and restart the app. Refresh the tab in Microsoft Teams. The tab should display `{ "status": "OK" }`.
+1. Save your changes and restart the app. Refresh the tab in Microsoft Teams. You should get a pop-up window asking for consent to the Microsoft Graph permissions scopes. After accepting, the tab should display `{ "status": "OK" }`.
+
+    > [!NOTE]
+    > If the tab displays `"FailedToOpenWindow"`, please disable pop-up blockers in your browser and reload the page.
 
 1. Review the log output. You should see the `Access token for Graph` entry. If you parse that token, you'll notice that it contains the Microsoft Graph scopes configured in **appsettings.json**.
 

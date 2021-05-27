@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using GraphTutorial.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,6 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
 using Microsoft.Graph;
 using TimeZoneConverter;
-using GraphTutorial.Models;
 
 namespace GraphTutorial.Controllers
 {
@@ -37,7 +37,7 @@ namespace GraphTutorial.Controllers
 
         // <GetSnippet>
         [HttpGet]
-        public async Task<IEnumerable<Event>> Get()
+        public async Task<ActionResult<IEnumerable<Event>>> Get()
         {
             // This verifies that the access_as_user scope is
             // present in the bearer token, throws if not
@@ -92,68 +92,18 @@ namespace GraphTutorial.Controllers
                     .OrderBy("start/dateTime")
                     .GetAsync();
 
-                return results.CurrentPage;
+                return Ok(results.CurrentPage);
             }
             catch (Exception ex)
             {
-                await HandleGraphException(ex);
-                return null;
+                return HandleGraphException(ex);
             }
         }
         // </GetSnippet>
 
-        // <GetStartOfWeekSnippet>
-        private DateTime GetUtcStartOfWeekInTimeZone(DateTime today, string timeZoneId)
-        {
-            // Time zone returned by Graph could be Windows or IANA style
-            // TimeZoneConverter can take either
-            TimeZoneInfo userTimeZone = TZConvert.GetTimeZoneInfo(timeZoneId);
-
-            // Assumes Sunday as first day of week
-            int diff = System.DayOfWeek.Sunday - today.DayOfWeek;
-
-            // create date as unspecified kind
-            var unspecifiedStart = DateTime.SpecifyKind(today.AddDays(diff), DateTimeKind.Unspecified);
-
-            // convert to UTC
-            return TimeZoneInfo.ConvertTimeToUtc(unspecifiedStart, userTimeZone);
-        }
-        // </GetStartOfWeekSnippet>
-
-        // <HandleGraphExceptionSnippet>
-        private async Task HandleGraphException(Exception exception)
-        {
-            if (exception is MicrosoftIdentityWebChallengeUserException)
-            {
-                _logger.LogError(exception, "Consent required");
-                // This exception indicates consent is required.
-                // Return a 403 with "consent_required" in the body
-                // to signal to the tab it needs to prompt for consent
-                HttpContext.Response.ContentType = "text/plain";
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                await HttpContext.Response.WriteAsync("consent_required");
-            }
-            else if (exception is ServiceException)
-            {
-                var serviceException = exception as ServiceException;
-                _logger.LogError(serviceException, "Graph service error occurred");
-                HttpContext.Response.ContentType = "text/plain";
-                HttpContext.Response.StatusCode = (int)serviceException.StatusCode;
-                await HttpContext.Response.WriteAsync(serviceException.Error.ToString());
-            }
-            else
-            {
-                _logger.LogError(exception, "Error occurred");
-                HttpContext.Response.ContentType = "text/plain";
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                await HttpContext.Response.WriteAsync(exception.ToString());
-            }
-        }
-        // </HandleGraphExceptionSnippet>
-
         // <PostSnippet>
         [HttpPost]
-        public async Task<string> Post(NewEvent newEvent)
+        public async Task<ActionResult<string>> Post(NewEvent newEvent)
         {
             HttpContext.VerifyUserHasAnyAcceptedScope(apiScopes);
 
@@ -219,14 +169,69 @@ namespace GraphTutorial.Controllers
                     .Request()
                     .AddAsync(graphEvent);
 
-                return "success";
+                return Ok("success");
             }
             catch (Exception ex)
             {
-                await HandleGraphException(ex);
-                return null;
+                return HandleGraphException(ex);
             }
         }
         // </PostSnippet>
+
+        // <GetStartOfWeekSnippet>
+        private DateTime GetUtcStartOfWeekInTimeZone(DateTime today, string timeZoneId)
+        {
+            // Time zone returned by Graph could be Windows or IANA style
+            // TimeZoneConverter can take either
+            TimeZoneInfo userTimeZone = TZConvert.GetTimeZoneInfo(timeZoneId);
+
+            // Assumes Sunday as first day of week
+            int diff = System.DayOfWeek.Sunday - today.DayOfWeek;
+
+            // create date as unspecified kind
+            var unspecifiedStart = DateTime.SpecifyKind(today.AddDays(diff), DateTimeKind.Unspecified);
+
+            // convert to UTC
+            return TimeZoneInfo.ConvertTimeToUtc(unspecifiedStart, userTimeZone);
+        }
+        // </GetStartOfWeekSnippet>
+
+        // <HandleGraphExceptionSnippet>
+        private ActionResult HandleGraphException(Exception exception)
+        {
+            if (exception is MicrosoftIdentityWebChallengeUserException ||
+                exception.InnerException is MicrosoftIdentityWebChallengeUserException)
+            {
+                _logger.LogError(exception, "Consent required");
+                // This exception indicates consent is required.
+                // Return a 403 with "consent_required" in the body
+                // to signal to the tab it needs to prompt for consent
+                return new ContentResult {
+                    StatusCode = (int)HttpStatusCode.Forbidden,
+                    ContentType = "text/plain",
+                    Content = "consent_required"
+                };
+            }
+            else if (exception is ServiceException)
+            {
+                var serviceException = exception as ServiceException;
+                _logger.LogError(serviceException, "Graph service error occurred");
+                return new ContentResult {
+                    StatusCode = (int)serviceException.StatusCode,
+                    ContentType = "text/plain",
+                    Content = serviceException.Error.ToString()
+                };
+            }
+            else
+            {
+                _logger.LogError(exception, "Error occurred");
+                return new ContentResult {
+                    StatusCode = (int)HttpStatusCode.InternalServerError,
+                    ContentType = "text/plain",
+                    Content = exception.ToString()
+                };
+            }
+        }
+        // </HandleGraphExceptionSnippet>
     }
 }

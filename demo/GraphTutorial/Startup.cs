@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +39,7 @@ namespace GraphTutorial
                 .AddInMemoryTokenCaches();
 
             services.AddRazorPages();
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers();
         }
         // </ConfigureServicesSnippet>
 
