@@ -35,16 +35,14 @@ Before moving on, install some additional NuGet packages that you will use later
 - [Microsoft.Identity.Web](https://www.nuget.org/packages/Microsoft.Identity.Web/) for authenticating and requesting access tokens.
 - [Microsoft.Identity.Web.MicrosoftGraph](https://www.nuget.org/packages/Microsoft.Identity.Web.MicrosoftGraph/) for adding Microsoft Graph support configured with Microsoft.Identity.Web.
 - [Microsoft.Graph](https://www.nuget.org/packages/Microsoft.Graph/) to update the version of this package installed by Microsoft.Identity.Web.MicrosoftGraph.
-- [Microsoft.AspNetCore.Mvc.NewtonsoftJson](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.NewtonsoftJson/) to enable Newtonsoft JSON converters for compatibility with the Microsoft Graph SDK.
 - [TimeZoneConverter](https://github.com/mj1856/TimeZoneConverter) for translating Windows time zone identifiers to IANA identifiers.
 
 1. Run the following commands in your CLI to install the dependencies.
 
     ```Shell
-    dotnet add package Microsoft.Identity.Web --version 1.1.0
-    dotnet add package Microsoft.Identity.Web.MicrosoftGraph --version 1.1.0
-    dotnet add package Microsoft.Graph --version 3.16.0
-    dotnet add package Microsoft.AspNetCore.Mvc.NewtonsoftJson
+    dotnet add package Microsoft.Identity.Web --version 1.14.1
+    dotnet add package Microsoft.Identity.Web.MicrosoftGraph --version 1.14.1
+    dotnet add package Microsoft.Graph --version 4.0.0
     dotnet add package TimeZoneConverter
     ```
 

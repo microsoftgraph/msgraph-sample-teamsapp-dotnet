@@ -9,16 +9,13 @@ This tutorial teaches you how to build a Microsoft Teams app using ASP.NET Core 
 
 Before you start this tutorial, you should have the following installed on your development machine.
 
-- [.NET Core SDK](https://dotnet.microsoft.com/download).
+- [.NET SDK](https://dotnet.microsoft.com/download).
 - [ngrok](https://ngrok.com/)
 
-You should also have either a personal Microsoft account with a mailbox on Outlook.com, or a Microsoft work or school account. If you don't have a Microsoft account, there are a couple of options to get a free account:
-
-- You can [sign up for a new personal Microsoft account](https://signup.live.com/signup?wa=wsignin1.0&rpsnv=12&ct=1454618383&rver=6.4.6456.0&wp=MBI_SSL_SHARED&wreply=https://mail.live.com/default.aspx&id=64855&cbcxt=mai&bk=1454618383&uiflavor=web&uaid=b213a65b4fdc484382b6622b3ecaa547&mkt=E-US&lc=1033&lic=1).
-- You can [sign up for the Office 365 Developer Program](https://developer.microsoft.com/office/dev-program) to get a free Office 365 subscription.
+You should also have a Microsoft work or school account in a Microsoft 365 tenant that has [enabled custom Teams app sideloading](/microsoftteams/platform/concepts/build-and-test/prepare-your-o365-tenant#enable-custom-teams-apps-and-turn-on-custom-app-uploading). If you don't have a Microsoft work or school account, or your organization has not enabled custom Teams app sideloading, you can [sign up for the Microsoft 365 Developer Program](https://developer.microsoft.com/office/dev-program) to get a free Office 365 developer subscription.
 
 > [!NOTE]
-> This tutorial was written with .NET Core SDK version 3.1.402. The steps in this guide may work with other versions, but that has not been tested.
+> This tutorial was written with .NET SDK version 5.0.302. The steps in this guide may work with other versions, but that has not been tested.
 
 ## Feedback
 
