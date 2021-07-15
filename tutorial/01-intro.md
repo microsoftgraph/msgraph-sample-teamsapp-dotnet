@@ -15,7 +15,7 @@ Before you start this tutorial, you should have the following installed on your 
 You should also have a Microsoft work or school account in a Microsoft 365 tenant that has [enabled custom Teams app sideloading](/microsoftteams/platform/concepts/build-and-test/prepare-your-o365-tenant#enable-custom-teams-apps-and-turn-on-custom-app-uploading). If you don't have a Microsoft work or school account, or your organization has not enabled custom Teams app sideloading, you can [sign up for the Microsoft 365 Developer Program](https://developer.microsoft.com/office/dev-program) to get a free Office 365 developer subscription.
 
 > [!NOTE]
-> This tutorial was written with .NET SDK version 5.0.203. The steps in this guide may work with other versions, but that has not been tested.
+> This tutorial was written with .NET SDK version 5.0.302. The steps in this guide may work with other versions, but that has not been tested.
 
 ## Feedback
 

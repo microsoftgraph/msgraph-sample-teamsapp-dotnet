@@ -40,8 +40,8 @@ Before moving on, install some additional NuGet packages that you will use later
 1. Run the following commands in your CLI to install the dependencies.
 
     ```Shell
-    dotnet add package Microsoft.Identity.Web --version 1.11.0
-    dotnet add package Microsoft.Identity.Web.MicrosoftGraph --version 1.11.0
+    dotnet add package Microsoft.Identity.Web --version 1.14.1
+    dotnet add package Microsoft.Identity.Web.MicrosoftGraph --version 1.14.1
     dotnet add package Microsoft.Graph --version 4.0.0
     dotnet add package TimeZoneConverter
     ```
