@@ -4,6 +4,8 @@
     "msteams"
   ],
   "cSpell.words": [
-    "Contoso"
+    "authcomplete",
+    "Contoso",
+    "MSAL"
   ]
 }
