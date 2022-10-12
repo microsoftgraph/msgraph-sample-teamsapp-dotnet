@@ -1,0 +1,168 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div id="tab-container">
+    <h1 class="ms-fontSize-24 ms-fontWeight-semibold">Loading...</h1>
+</div>
+
+@section Scripts
+{
+<script>
+    $(document).ready(async function () {
+        if (microsoftTeams) {
+            await microsoftTeams.app.initialize();
+
+            try {
+                const token = await microsoftTeams.authentication.getAuthToken();
+                const events = await loadUserCalendar(token);
+                if (events) renderCalendar(events);
+            } catch (err) {
+                console.error(err);
+                renderError(err);
+            }
+        }
+    });
+
+    function renderError(error) {
+        $('#tab-container').empty();
+
+        $('<h1/>', {
+            text: 'Error'
+        }).appendTo('#tab-container');
+
+        $('<code/>', {
+            text: JSON.stringify(error, Object.getOwnPropertyNames(error)),
+            style: 'word-break: break-all;'
+        }).appendTo('#tab-container');
+    }
+
+    function renderCalendar(events) {
+        $('#tab-container').empty();
+
+        // Add title
+        $('<div/>', {
+            class: 'tab-title ms-fontSize-42',
+            text: 'Week at a glance'
+        }).appendTo('#tab-container');
+
+        // Render each event
+        events.map(event => {
+            const eventCard = $('<div/>', {
+            class: 'event-card ms-depth-4',
+            });
+
+            eventCard.append(renderSubject(event.subject));
+            eventCard.append(renderOrganizer(event.organizer));
+            eventCard.append(renderTimeSpan(event.start, event.end));
+
+            const location = renderLocation(event.location);
+            if (location) {
+            eventCard.append(location);
+            }
+
+            eventCard.appendTo('#tab-container');
+        });
+    }
+
+    function renderSubject(subject) {
+        if (!subject || subject.length <= 0) {
+            subject = '<No subject>';
+        }
+
+        return $('<div/>', {
+            class: 'ms-fontSize-18 ms-fontWeight-bold',
+            text: subject
+        });
+    }
+
+    function renderOrganizer(organizer) {
+        return $('<div/>', {
+            class: 'ms-fontSize-14 ms-fontWeight-semilight',
+            text: organizer.emailAddress.name
+        }).append($('<i/>', {
+            class: 'ms-Icon ms-Icon--PartyLeader',
+            style: 'margin-right: 10px;'
+        }));
+    }
+
+    function renderTimeSpan(start, end) {
+        return $('<div/>', {
+            class: 'ms-fontSize-14 ms-fontWeight-semilight',
+            text: `${formatDateTime(start.dateTime)} - ${formatDateTime(end.dateTime)}`
+        }).append($('<i/>', {
+            class: 'ms-Icon ms-Icon--DateTime2',
+            style: 'margin-right: 10px;'
+        }));
+    }
+
+    function formatDateTime(dateTime) {
+        const date = new Date(dateTime);
+
+        // Format like 10/14/2020 4:00 PM
+        let hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        const minStr = minutes < 10 ? `0${minutes}` : minutes;
+
+        return `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()} ${hours}:${minStr} ${ampm}`;
+    }
+
+    function renderLocation(location) {
+        if (!location || location.displayName.length <= 0) {
+            return null;
+        }
+
+        return $('<div/>', {
+            class: 'ms-fontSize-14 ms-fontWeight-semilight',
+            text: location.displayName
+        }).append($('<i/>', {
+            class: 'ms-Icon ms-Icon--MapPin',
+            style: 'margin-right: 10px;'
+        }));
+    }
+
+    async function loadUserCalendar(token) {
+        // Call the API
+        try {
+            const response = await fetch('/calendar', {
+                headers: {
+                'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok)
+            {
+                // Get the JSON payload
+                return await response.json();
+            } else if (response.status === 403) {
+                const body = await response.text();
+
+                // If the API sent 'consent_required'
+                //  we need to prompt the user
+                if (body === 'consent_required') {
+                    await promptForConsent();
+                    // Retry API call
+                    return await loadUserCalendar(token);
+                }
+            }
+        } catch (err) {
+            console.error(err);
+            renderError(err);
+        }
+    }
+
+    async function promptForConsent() {
+        // Cause Teams to popup a window for consent
+        await microsoftTeams.authentication.authenticate({
+            url: `${window.location.origin}/authenticate`,
+            width: 600,
+            height: 535
+        });
+    }
+</script>
+}

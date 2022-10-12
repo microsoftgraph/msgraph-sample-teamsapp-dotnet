@@ -1,0 +1,48 @@
+@page
+<!-- Copyright (c) Microsoft Corporation.
+     Licensed under the MIT License. -->
+@model AuthenticateModel
+
+@section Scripts
+{
+<script>
+    $(document).ready(async function () {
+        await microsoftTeams.app.initialize();
+
+        // Save the state so it can be verified in
+        // AuthComplete.cshtml
+        localStorage.setItem('auth-state', '@Model.State');
+
+        // Get the context for tenant ID and login hint
+        const context = await microsoftTeams.app.getContext();
+
+        // Set all of the query parameters for an
+        // authorization request
+        const queryParams = {
+            client_id: '@Model.ApplicationId',
+            response_type: 'code',
+            response_mode: 'fragment',
+            scope: 'https://graph.microsoft.com/.default openid',
+            redirect_uri: `${window.location.origin}/authcomplete`,
+            nonce: '@Model.Nonce',
+            state: '@Model.State',
+            login_hint: context.user.loginHint,
+        };
+
+        // Generate the URL
+        const authEndpoint = `https://login.microsoftonline.com/${context.user.tenant.id}/oauth2/v2.0/authorize?${toQueryString(queryParams)}`;
+
+        // Browse to the URL
+        window.location.assign(authEndpoint);
+    });
+
+    // Helper function to build a query string from an object
+    function toQueryString(queryParams) {
+        let encodedQueryParams = [];
+        for (let key in queryParams) {
+            encodedQueryParams.push(key + '=' + encodeURIComponent(queryParams[key]));
+        }
+        return encodedQueryParams.join('&');
+    }
+</script>
+}
