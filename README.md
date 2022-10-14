@@ -43,6 +43,8 @@ Microsoft Teams does not support local hosting for apps. The server hosting your
 
 ## Register a web application with the Azure Active Directory admin center
 
+> **NOTE:** As an alternative to using the AAD admin center, you can use the [RegisterApp.ps1](RegisterApp.ps1) script. It requires the [Microsoft Graph PowerShell SDK](https://learn.microsoft.com/powershell/microsoftgraph/installation) and a work or school account with the Application administrator, Cloud application administrator, or Global administrator role.
+
 1. Open a browser and navigate to the [Azure Active Directory admin center](https://aad.portal.azure.com). Login using a **personal account** (aka: Microsoft Account) or **Work or School Account**.
 
 1. Select **Azure Active Directory** in the left-hand navigation, then select **App registrations** under **Manage**.
@@ -150,6 +152,8 @@ If you have restarted ngrok and your ngrok URL has changed, be sure to update th
 - `resource` in manifest.json
 
 Finally, you will need to recreate the manifest.zip file and re-upload it to Teams.
+
+> **NOTE:** As an alternative to using the AAD admin center to update the app registration, you can use the [UpdateAppRegistration.ps1](UpdateAppRegistration.ps1) script. It requires the [Microsoft Graph PowerShell SDK](https://learn.microsoft.com/powershell/microsoftgraph/installation) and a work or school account with the Application administrator, Cloud application administrator, or Global administrator role.
 
 ## Code of conduct
 
