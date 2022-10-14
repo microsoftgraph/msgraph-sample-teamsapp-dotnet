@@ -1,0 +1,67 @@
+/* Copyright (c) Microsoft Corporation.
+   Licensed under the MIT License. */
+
+:root {
+  --border-style: none;
+}
+
+.tab-title {
+  margin-bottom: .5em;
+}
+
+.event-card {
+  margin: .5em;
+  padding: 1em;
+  border-style: var(--border-style);
+  border-width: 1px;
+  border-color: #fff;
+}
+
+.event-card div {
+  margin-bottom: .25em;
+}
+
+.event-card .ms-Icon {
+  margin-right: 10px;
+  float: left;
+  position: relative;
+  top: 3px;
+}
+
+.event-card .ms-Icon--MapPin {
+  top: 2px;
+}
+
+.form-container {
+  max-width: 720px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: .25em;
+}
+
+.form-input {
+  width: 100%;
+  margin-bottom: .25em;
+  padding: .5em;
+  box-sizing: border-box;
+}
+
+.form-button {
+  padding: .5em;
+}
+
+.result-panel {
+  display: none;
+  padding: 1em;
+  margin: 1em;
+}
+
+.error-msg {
+  color: red;
+}
+
+.success-msg {
+  color: green;
+}

@@ -1,6 +1,5 @@
 bin/
 obj/
 debug.log
-appsettings.json
-GraphTutorial.zip
-/demo/GraphTutorial.old/
+appsettings.Development.json
+manifest.zip

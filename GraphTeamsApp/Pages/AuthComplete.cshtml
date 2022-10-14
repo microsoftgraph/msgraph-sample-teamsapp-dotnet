@@ -1,0 +1,42 @@
+@page
+<!-- Copyright (c) Microsoft Corporation.
+     Licensed under the MIT License. -->
+
+@section Scripts
+{
+<script>
+    $(document).ready(async function () {
+        await microsoftTeams.app.initialize();
+        console.log(`Hash: ${location.hash}`);
+        const hashParams = getHashParameters();
+        if (hashParams['error']) {
+            microsoftTeams.authentication.notifyFailure(hashParams['error']);
+        } else if (hashParams['code']) {
+            // Check the state parameter
+            const expectedState = localStorage.getItem('auth-state');
+            if (expectedState !== hashParams['state']) {
+                microsoftTeams.authentication.notifyFailure('StateDoesNotMatch');
+            } else {
+                // State parameter matches, report success
+                localStorage.removeItem('auth-state');
+                microsoftTeams.authentication.notifySuccess('Success');
+            }
+        } else {
+            microsoftTeams.authentication.notifyFailure('NoCodeInResponse');
+        }
+    });
+
+    // Helper function to generate a hash from
+    // a query string
+    function getHashParameters() {
+        let hashParams = {};
+        location.hash.substr(1).split('&').forEach(function (item) {
+            let s = item.split('='),
+                k = s[0],
+                v = s[1] && decodeURIComponent(s[1]);
+            hashParams[k] = v;
+        });
+        return hashParams;
+    }
+</script>
+}

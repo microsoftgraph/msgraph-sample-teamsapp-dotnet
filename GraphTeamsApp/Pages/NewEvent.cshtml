@@ -1,0 +1,132 @@
+@page
+<!-- Copyright (c) Microsoft Corporation.
+     Licensed under the MIT License. -->
+@{
+  ViewData["Title"] = "New event";
+}
+
+<div class="form-container">
+    <form id="newEventForm">
+        <div class="ms-Grid" dir="ltr">
+            <div class="ms-Grid-row">
+                <div class="ms-Grid-col ms-sm12">
+                    <label class="ms-fontWeight-semibold form-label" for="subject">Subject</label>
+                    <input class="form-input" type="text" id="subject" name="subject" />
+                </div>
+            </div>
+            <div class="ms-Grid-row">
+                <div class="ms-Grid-col ms-sm12">
+                    <label class="ms-fontWeight-semibold form-label" for="attendees">Attendees</label>
+                    <input class="form-input" type="text" id="attendees" name="attendees" placeholder="Enter email addresses of attendees. Separate multiple with ';'. Leave blank for no attendees." />
+                </div>
+            </div>
+            <div class="ms-Grid-row">
+                <div class="ms-Grid-col ms-sm6">
+                    <label class="ms-fontWeight-semibold form-label" for="start">Start</label>
+                    <input class="form-input" type="datetime-local" id="start" name="start" />
+                </div>
+                <div class="ms-Grid-col ms-sm6">
+                    <label class="ms-fontWeight-semibold form-label" for="end">End</label>
+                    <input class="form-input" type="datetime-local" id="end" name="end" />
+                </div>
+            </div>
+            <div class="ms-Grid-row">
+                <div class="ms-Grid-col ms-sm12">
+                    <label class="ms-fontWeight-semibold form-label" for="body">Body</label>
+                    <textarea class="form-input" id="body" name="body" rows="4"></textarea>
+                </div>
+            </div>
+            <input class="form-button" type="submit" value="Create"/>
+        </div>
+    </form>
+    <div class="ms-depth-16 result-panel"></div>
+</div>
+
+@section Scripts
+{
+  <script>
+    $(document).ready(async function () {
+        if (microsoftTeams) {
+            await microsoftTeams.app.initialize();
+        }
+
+        $('#newEventForm').on('submit', async (e) => {
+            e.preventDefault();
+            $('.result-panel').empty();
+            $('.result-panel').hide();
+
+            const formData = new FormData(newEventForm);
+
+            // Basic validation
+            // Require subject, start, and end
+            const subject = formData.get('subject');
+            const start = formData.get('start');
+            const end = formData.get('end');
+
+            if (subject.length <= 0 || start.length <= 0 || end.length <= 0) {
+                $('<div/>', {
+                    class: 'error-msg',
+                    text: 'Subject, Start, and End are required.'
+                }).appendTo('.result-panel');
+                $('.result-panel').show();
+                return;
+            }
+
+            // Get the auth token from Teams
+            try {
+                const token = await microsoftTeams.authentication.getAuthToken();
+                await createEvent(token, formData);
+            } catch (err) {
+                renderError('Error getting token', err);
+            }
+        });
+    });
+
+    function renderError(prefix, error) {
+        $('<div/>', {
+            class: 'error-msg',
+            text: `${prefix}: ${error}`
+        }).appendTo('.result-panel');
+        $('.result-panel').show();
+    }
+
+    async function createEvent(token, formData) {
+        // Convert the form to a JSON payload
+        jsonFormData = formDataToJson();
+
+        // Post the payload to the web API
+        const response = await fetch('/calendar', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: jsonFormData
+        });
+
+        if (response.ok) {
+            $('<div/>', {
+                class: 'success-msg',
+                text: 'Event added to your calendar'
+            }).appendTo('.result-panel');
+            $('.result-panel').show();
+        } else {
+            const error = await response.text();
+            renderError('Error creating event', error);
+        }
+    }
+
+    // Helper method to serialize the form fields
+    // as JSON
+    function formDataToJson() {
+        const array = $('#newEventForm').serializeArray();
+        const jsonObj = {};
+
+        array.forEach((kvp) => {
+            jsonObj[kvp.name] = kvp.value;
+        });
+
+        return JSON.stringify(jsonObj);
+    }
+  </script>
+}

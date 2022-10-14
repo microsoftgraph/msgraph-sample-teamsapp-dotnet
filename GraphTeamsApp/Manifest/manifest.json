@@ -1,0 +1,58 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.14/MicrosoftTeams.schema.json",
+    "version": "1.0.0",
+    "manifestVersion": "1.14",
+    "id": "2ad5da1c-91e2-4c6b-a5a6-df65f29ea372",
+    "packageName": "com.package.name",
+    "name": {
+        "short": "Graph Teams Tab App",
+        "full": ""
+    },
+    "developer": {
+        "name": "Contoso, Inc.",
+        "mpnId": "",
+        "websiteUrl": "https://www.contoso.com",
+        "privacyUrl": "https://www.contoso.com/privacy",
+        "termsOfUseUrl": "https://www.contoso.com/terms"
+    },
+    "description": {
+        "short": "Uses Microsoft Graph to access your calendar",
+        "full": "Uses Microsoft Graph to access your calendar and display it in Microsoft Teams."
+    },
+    "icons": {
+        "outline": "outline.png",
+        "color": "color.png"
+    },
+    "accentColor": "#FFFFFF",
+    "staticTabs": [
+        {
+            "entityId": "calendarTab",
+            "name": "Graph calendar",
+            "contentUrl": "https://YOUR_NGROK_DOMAIN",
+            "scopes": [
+                "personal"
+            ]
+        },
+        {
+            "entityId": "createEventTab",
+            "name": "Create event",
+            "contentUrl": "https://YOUR_NGROK_DOMAIN/newevent",
+            "scopes": [
+                "personal"
+            ]
+        },
+        {
+            "entityId": "about",
+            "scopes": [
+                "personal"
+            ]
+        }
+    ],
+    "validDomains": [
+        "YOUR_NGROK_DOMAIN"
+    ],
+    "webApplicationInfo": {
+        "id": "YOUR_CLIENT_ID",
+        "resource": "api://YOUR_NGROK_DOMAIN/YOUR_CLIENT_ID"
+    }
+}

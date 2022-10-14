@@ -2,5 +2,10 @@
   "cSpell.ignoreWords": [
     "aadsts",
     "msteams"
+  ],
+  "cSpell.words": [
+    "authcomplete",
+    "Contoso",
+    "MSAL"
   ]
 }
