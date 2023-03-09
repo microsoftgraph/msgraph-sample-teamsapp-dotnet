@@ -21,13 +21,13 @@ This sample demonstrates how to use the Microsoft Graph .NET SDK to access data 
 
 To run this sample, you need the following:
 
-- [.NET SDK 6.x](https://dotnet.microsoft.com/download).
+- [.NET SDK 7.x](https://dotnet.microsoft.com/download).
 - [ngrok](https://ngrok.com/)
 - A Microsoft work or school account in a Microsoft 365 tenant that has [enabled custom Teams app uploading](https://learn.microsoft.com/microsoftteams/platform/concepts/build-and-test/prepare-your-o365-tenant#enable-custom-teams-apps-and-turn-on-custom-app-uploading).
 
 If you don't have a Microsoft work or school account, or your organization has not enabled custom Teams app uploading, you can [sign up for the Microsoft 365 Developer Program](https://developer.microsoft.com/microsoft-365/dev-program) to get a free Office 365 developer subscription.
 
-This sample was written with .NET SDK 6.0.401.
+This sample was written with .NET SDK 7.0.200.
 
 ## Start an ngrok tunnel
 

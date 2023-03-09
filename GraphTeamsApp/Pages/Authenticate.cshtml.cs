@@ -8,7 +8,7 @@ namespace GraphTeamsApp.Pages
     public class AuthenticateModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        public string ApplicationId { get; private set; }
+        public string? ClientId { get; private set; }
         public string State { get; private set; }
         public string Nonce { get; private set; }
 
@@ -21,7 +21,7 @@ namespace GraphTeamsApp.Pages
             // Read the application ID from the
             // configuration. This is used to build
             // the authorization URL for the consent prompt
-            ApplicationId = configuration
+            ClientId = configuration
                 .GetSection("AzureAd")
                 .GetValue<string>("ClientId");
 
